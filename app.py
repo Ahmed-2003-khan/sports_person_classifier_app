@@ -97,7 +97,6 @@ st.write(
 )
 
 st.title("Cricket Player Face Classification")
-st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
 # Display player images at the top of the page
 st.subheader("This website can classify the following cricket players:")
