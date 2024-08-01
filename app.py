@@ -55,7 +55,7 @@ with open(labels_path, 'r') as labels_file:
 st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
 
 st.title("Cricket Player Face Classification")
-st.markdown("Upload a phot to classify the cricket player. Ensure the face is clear for best results.")
+st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
 st.sidebar.header("Instructions")
 st.sidebar.write("1. Upload a clear photo of the face.")
