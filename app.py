@@ -27,7 +27,6 @@ def w2d(img, mode='haar', level=1):
 # Function to get cropped image if 2 eyes are detected
 def get_cropped_image_if_2_eyes(image_path):
     img = cv2.imread(image_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
     if img is None:
         return None
     result = detector.detect_faces(img)
@@ -64,12 +63,8 @@ players = ["Imran Khan", "Kapil Dev", "Virat Kohli", "MS Dhoni", "Shoaib Akhtar"
 player_images = ["imran_khan.jpg", "kapil_dev.jpg", "virat_kohli.jpeg", "ms_dhoni.jpeg", "shoaib_akhtar.jpeg", "wasim_akram.jpeg"]
 
 cols = st.columns(6)
-target_size = (150, 150)  # Define a target size for all images
 for col, player, img_path in zip(cols, players, player_images):
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-    resized_img = cv2.resize(img, target_size)
-    col.image(resized_img, caption=player, use_column_width=True)
+    col.image(img_path, caption=player, use_column_width=True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
