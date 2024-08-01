@@ -54,39 +54,6 @@ with open(labels_path, 'r') as labels_file:
 # Define the Streamlit app
 st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
 
-# Custom CSS for dark mode
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #0e1117;
-        color: #c9d1d9;
-    }
-    .stButton>button {
-        background-color: #21262d;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
-    }
-    .stTextInput>div>div>input {
-        background-color: #21262d;
-        color: #c9d1d9;
-    }
-    .stFileUploader>label>div {
-        background-color: #21262d;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
-    }
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
-        color: #c9d1d9;
-    }
-    .stImage>div>img {
-        border: 1px solid #30363d;
-    }
-    </style>
-    """, 
-    unsafe_allow_html=True
-)
-
 st.title("Cricket Player Face Classification")
 st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
@@ -101,7 +68,7 @@ for col, player, img_path in zip(cols, players, player_images):
     img = cv2.imread(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
     resized_img = cv2.resize(img, target_size)
-    col.image(resized_img, caption=player, use_column_width=True)
+    col.image(resized_img, caption=player, use_column_width = True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
@@ -138,4 +105,4 @@ if uploaded_file is not None:
                 st.write(f"**Predicted Class:** {predicted_class}")
                 
         else:
-            st.error("No face with 2 eyes detected. Please upload a clearer photo.")
+            st.error("No face with 2 eyes detected. Please upload a clearer photo.") 
