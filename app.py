@@ -66,6 +66,7 @@ cols = st.columns(6)
 target_size = (150, 150)  # Define a target size for all images
 for col, player, img_path in zip(cols, players, player_images):
     img = cv2.imread(img_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
     resized_img = cv2.resize(img, target_size)
     col.image(resized_img, caption=player, use_column_width=True)
 
