@@ -51,52 +51,11 @@ with open(model_path, 'rb') as model_file:
 with open(labels_path, 'r') as labels_file:
     labels = json.load(labels_file)
 
-# Set the page configuration as the first Streamlit command
+# Define the Streamlit app
 st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
 
-# Custom CSS for background and animations
-st.write(
-    """
-    <style>
-    body {
-        background-color: black;
-        color: white;
-    }
-    .stButton>button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        transition-duration: 0.4s;
-    }
-    .stButton>button:hover {
-        background-color: white;
-        color: black;
-    }
-    .stSpinner {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 st.title("Cricket Player Face Classification")
+st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
 # Display player images at the top of the page
 st.subheader("This website can classify the following cricket players:")
@@ -104,12 +63,8 @@ players = ["Imran Khan", "Kapil Dev", "Virat Kohli", "MS Dhoni", "Shoaib Akhtar"
 player_images = ["imran_khan.jpg", "kapil_dev.jpg", "virat_kohli.jpeg", "ms_dhoni.jpeg", "shoaib_akhtar.jpeg", "wasim_akram.jpeg"]
 
 cols = st.columns(6)
-target_size = (150, 150)  # Define a target size for all images
 for col, player, img_path in zip(cols, players, player_images):
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-    resized_img = cv2.resize(img, target_size)
-    col.image(resized_img, caption=player, use_column_width=True)
+    col.image(img_path, caption=player, use_column_width=True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
@@ -128,7 +83,7 @@ if uploaded_file is not None:
             scalled_raw_image = cv2.resize(cropped_image, (32, 32))
             img_har = w2d(cropped_image, 'db1', 5)
             scalled_img_har = cv2.resize(img_har, (32, 32))
-            combined_img = np.vstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
+            combined_img = np.hstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
             combined_img = combined_img.reshape(1, -1).astype(float)
 
             # Predict the class
