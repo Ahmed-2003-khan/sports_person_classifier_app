@@ -62,9 +62,12 @@ st.subheader("This website can classify the following cricket players:")
 players = ["Imran Khan", "Kapil Dev", "Virat Kohli", "MS Dhoni", "Shoaib Akhtar", "Wasim Akram"]
 player_images = ["imran_khan.jpg", "kapil_dev.jpg", "virat_kohli.jpeg", "ms_dhoni.jpeg", "shoaib_akhtar.jpeg", "wasim_akram.jpeg"]
 
+# Resize and display images
 cols = st.columns(6)
 for col, player, img_path in zip(cols, players, player_images):
-    col.image(img_path, caption=player, use_column_width=True)
+    img = Image.open(img_path)
+    img = img.resize((100, 100))  # Resize image to 100x100 pixels
+    col.image(img, caption=player, use_column_width=True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
