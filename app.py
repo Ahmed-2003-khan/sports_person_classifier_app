@@ -27,6 +27,7 @@ def w2d(img, mode='haar', level=1):
 # Function to get cropped image if 2 eyes are detected
 def get_cropped_image_if_2_eyes(image_path):
     img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
     if img is None:
         return None
     result = detector.detect_faces(img)
