@@ -51,6 +51,9 @@ with open(model_path, 'rb') as model_file:
 with open(labels_path, 'r') as labels_file:
     labels = json.load(labels_file)
 
+# Set the page configuration as the first Streamlit command
+st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
+
 # Custom CSS for background and animations
 st.write(
     """
@@ -92,9 +95,6 @@ st.write(
     """,
     unsafe_allow_html=True
 )
-
-# Define the Streamlit app
-st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
 
 st.title("Cricket Player Face Classification")
 st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
