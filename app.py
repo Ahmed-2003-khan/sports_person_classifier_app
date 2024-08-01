@@ -57,18 +57,14 @@ st.set_page_config(page_title="Cricket Player Face Classification", layout="wide
 st.title("Cricket Player Face Classification")
 st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
-st.sidebar.header("Instructions")
-st.sidebar.write("1. Upload a clear photo of the face.")
-st.sidebar.write("2. The app will detect the face and classify it.")
-st.sidebar.write("3. If successful, the predicted class will be shown.")
-
-# Display player images on the sidebar
-st.sidebar.subheader("Famous Cricket Players")
+# Display player images at the top of the page
+st.subheader("This website can classify the following cricket players:")
 players = ["Imran Khan", "Kapil Dev", "Virat Kohli", "MS Dhoni", "Shoaib Akhtar", "Wasim Akram"]
 player_images = ["imran_khan.jpg", "kapil_dev.jpg", "virat_kohli.jpeg", "ms_dhoni.jpeg", "shoaib_akhtar.jpeg", "wasim_akram.jpeg"]
 
-for player, img_path in zip(players, player_images):
-    st.sidebar.image(img_path, caption=player, use_column_width=True)
+cols = st.columns(6)
+for col, player, img_path in zip(cols, players, player_images):
+    col.image(img_path, caption=player, use_column_width=True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
