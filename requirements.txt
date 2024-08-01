@@ -4,4 +4,4 @@ numpy
 opencv-python-headless
 pywavelets
 mtcnn
-libgl:libgl1
+libgl1
