@@ -42,8 +42,8 @@ def get_cropped_image_if_2_eyes(image_path):
     return None
 
 # Load your model and label dictionary
-model_path = "D:\\Cricket Players Classifier\\Model\\model.pkl"
-labels_path = "D:\\Cricket Players Classifier\\Model\\class_dictionary.json"
+model_path = "model.pkl"
+labels_path = "class_dictionary.json"
 
 with open(model_path, 'rb') as model_file:
     model = pickle.load(model_file)
