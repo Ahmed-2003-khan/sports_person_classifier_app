@@ -3,4 +3,5 @@ pillow==9.3.0
 numpy==1.23.5
 opencv-python-headless==4.6.0.66
 pywavelets==1.4.1
+tensorflow
 cvlib
