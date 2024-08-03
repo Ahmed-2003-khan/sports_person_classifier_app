@@ -5,7 +5,8 @@ import numpy as np
 import cv2
 import pywt
 import json
-import face_recognition
+import cvlib as cv
+from cvlib.object_detection import draw_bbox
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -21,15 +22,15 @@ def w2d(img, mode='haar', level=1):
     imArray_H = np.uint8(imArray_H)
     return imArray_H
 
-# Function to get cropped image if a face is detected using face_recognition
+# Function to get cropped image if a face is detected using cvlib
 def get_cropped_image_if_face_detected(image_path):
-    img = face_recognition.load_image_file(image_path)
-    face_locations = face_recognition.face_locations(img)
-
-    if face_locations:
-        top, right, bottom, left = face_locations[0]
-        face_image = img[top:bottom, left:right]
-        return face_image
+    img = cv2.imread(image_path)
+    faces, confidences = cv.detect_face(img)
+    
+    if len(faces) > 0:
+        x, y, w, h = faces[0]
+        face_img = img[y:h, x:w]
+        return face_img
     return None
 
 # Load your model and label dictionary
