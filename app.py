@@ -5,7 +5,10 @@ import numpy as np
 import cv2
 import pywt
 import json
-import face_recognition
+from mtcnn import MTCNN
+
+# Initialize MTCNN
+detector = MTCNN()
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -21,16 +24,21 @@ def w2d(img, mode='haar', level=1):
     imArray_H = np.uint8(imArray_H)
     return imArray_H
 
-# Function to get cropped image if a face is detected
-def get_cropped_image(image_path):
+# Function to get cropped image if 2 eyes are detected
+def get_cropped_image_if_2_eyes(image_path):
     img = cv2.imread(image_path)
     if img is None:
         return None
-    face_locations = face_recognition.face_locations(img)
-    if face_locations:
-        top, right, bottom, left = face_locations[0]
-        roi_color = img[top:bottom, left:right]
-        return roi_color
+    result = detector.detect_faces(img)
+    if result:
+        for face in result:
+            if face['confidence'] >= 0.9:
+                keypoints = face['keypoints']
+                if 'left_eye' in keypoints and 'right_eye' in keypoints:
+                    bounding_box = face['box']
+                    x, y, w, h = bounding_box
+                    roi_color = img[y:y+h, x:x+w]
+                    return roi_color
     return None
 
 # Load your model and label dictionary
@@ -64,7 +72,7 @@ if uploaded_file is not None:
             f.write(uploaded_file.getbuffer())
 
         # Get cropped image
-        cropped_image = get_cropped_image("temp_image.jpg")
+        cropped_image = get_cropped_image_if_2_eyes("temp_image.jpg")
 
         if cropped_image is not None:
             # Preprocess the image
@@ -82,11 +90,11 @@ if uploaded_file is not None:
             
             with col1:
                 st.subheader("Uploaded pic")
-                st.image(uploaded_file, caption='Cropped Face detected', use_column_width=True)
+                st.image(uploaded_file, caption='Cropped Face with 2 eyes detected', use_column_width=True)
             
             with col2:
                 st.subheader("Prediction")
                 st.write(f"**Predicted Class:** {predicted_class}")
                 
         else:
-            st.error("No face detected. Please upload a clearer photo.")
+            st.error("No face with 2 eyes detected. Please upload a clearer photo.")
