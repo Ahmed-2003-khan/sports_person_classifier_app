@@ -3,9 +3,4 @@ pillow==9.3.0
 numpy==1.23.5
 opencv-python-headless==4.6.0.66
 pywavelets==1.4.1
-mtcnn==0.1.0
-tensorflow==2.17.0
-scikit-learn==1.2.2
-cmake 
-dlib  
-face_recognition
+cvlib
