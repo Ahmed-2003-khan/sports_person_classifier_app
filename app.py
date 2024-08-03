@@ -5,7 +5,6 @@ import numpy as np
 import cv2
 import pywt
 import json
-import face_recognition
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -21,14 +20,16 @@ def w2d(img, mode='haar', level=1):
     imArray_H = np.uint8(imArray_H)
     return imArray_H
 
-# Function to get cropped image if a face is detected
+# Function to get cropped image if a face is detected using OpenCV
 def get_cropped_image_if_face_detected(image_path):
-    img = face_recognition.load_image_file(image_path)
-    face_locations = face_recognition.face_locations(img)
-    
-    if face_locations:
-        top, right, bottom, left = face_locations[0]
-        roi_color = img[top:bottom, left:right]
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+    if len(faces) > 0:
+        (x, y, w, h) = faces[0]
+        roi_color = img[y:y+h, x:x+w]
         return roi_color
     return None
 
