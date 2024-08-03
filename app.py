@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import pywt
 import json
+import face_recognition
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -20,17 +21,15 @@ def w2d(img, mode='haar', level=1):
     imArray_H = np.uint8(imArray_H)
     return imArray_H
 
-# Function to get cropped image if a face is detected using OpenCV
+# Function to get cropped image if a face is detected using face_recognition
 def get_cropped_image_if_face_detected(image_path):
-    img = cv2.imread(image_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    img = face_recognition.load_image_file(image_path)
+    face_locations = face_recognition.face_locations(img)
 
-    if len(faces) > 0:
-        (x, y, w, h) = faces[0]
-        roi_color = img[y:y+h, x:x+w]
-        return roi_color
+    if face_locations:
+        top, right, bottom, left = face_locations[0]
+        face_image = img[top:bottom, left:right]
+        return face_image
     return None
 
 # Load your model and label dictionary
@@ -71,7 +70,7 @@ if uploaded_file is not None:
             scalled_raw_image = cv2.resize(cropped_image, (32, 32))
             img_har = w2d(cropped_image, 'db1', 5)
             scalled_img_har = cv2.resize(img_har, (32, 32))
-            combined_img = np.vstack((scalled_raw_image.reshape(32*32*3,1), scalled_img_har.reshape(32*32,1)))
+            combined_img = np.hstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
             combined_img = combined_img.reshape(1, -1).astype(float)
 
             # Predict the class
