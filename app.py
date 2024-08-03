@@ -88,33 +88,39 @@ uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"
 if uploaded_file is not None:
     with st.spinner('Processing image...'):
         # Save the uploaded file to disk temporarily
-        with open("temp_image.jpg", "wb") as f:
+        temp_image_path = "temp_image.jpg"
+        with open(temp_image_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
         # Get cropped image
-        cropped_image = get_cropped_image_if_2_eyes("temp_image.jpg")
+        cropped_image = get_cropped_image_if_2_eyes(temp_image_path)
 
         if cropped_image is not None:
-            # Preprocess the image
-            scalled_raw_image = cv2.resize(cropped_image, (32, 32))
-            img_har = w2d(cropped_image, 'db1', 5)
-            scalled_img_har = cv2.resize(img_har, (32, 32))
-            combined_img = np.vstack((scalled_raw_image.reshape(32*32*3,1), scalled_img_har.reshape(32*32,1)))
-            combined_img = combined_img.reshape(1, -1).astype(float)
+            # Check the shape of the cropped image
+            st.write("Cropped image shape:", cropped_image.shape)
+            if cropped_image.size == 0:
+                st.error("Cropped image is empty. Please try another photo.")
+            else:
+                # Preprocess the image
+                scalled_raw_image = cv2.resize(cropped_image, (32, 32))
+                img_har = w2d(cropped_image, 'db1', 5)
+                scalled_img_har = cv2.resize(img_har, (32, 32))
+                combined_img = np.vstack((scalled_raw_image.reshape(32*32*3,1), scalled_img_har.reshape(32*32,1)))
+                combined_img = combined_img.reshape(1, -1).astype(float)
 
-            # Predict the class
-            prediction = model.predict(combined_img)
-            predicted_class = labels[str(prediction[0])]
+                # Predict the class
+                prediction = model.predict(combined_img)
+                predicted_class = labels[str(prediction[0])]
 
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.subheader("Uploaded pic")
-                st.image(uploaded_file, caption='Cropped Face with 2 eyes detected', use_column_width=True)
-            
-            with col2:
-                st.subheader("Prediction")
-                st.write(f"**Predicted Class:** {predicted_class}")
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.subheader("Uploaded pic")
+                    st.image(uploaded_file, caption='Cropped Face with 2 eyes detected', use_column_width=True)
+                
+                with col2:
+                    st.subheader("Prediction")
+                    st.write(f"**Predicted Class:** {predicted_class}")
                 
         else:
             st.error("No face with 2 eyes detected. Please upload a clearer photo.")
