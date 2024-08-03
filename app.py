@@ -24,6 +24,10 @@ def w2d(img, mode='haar', level=1):
     imArray_H = np.uint8(imArray_H)
     return imArray_H
 
+def resize_image(image_path, size=(150, 150)):
+    image = Image.open(image_path)
+    return image.resize(size)
+
 # Function to get cropped image if 2 eyes are detected
 def get_cropped_image_if_2_eyes(image_path):
     img = cv2.imread(image_path)
@@ -64,7 +68,8 @@ player_images = ["imran_khan.jpg", "kapil_dev.jpg", "virat_kohli.jpeg", "ms_dhon
 
 cols = st.columns(6)
 for col, player, img_path in zip(cols, players, player_images):
-    col.image(img_path, caption=player, use_column_width=True)
+    resized_img = resize_image(img_path)
+    col.image(resized_img, caption=player, use_column_width=True)
 
 # File uploader for image
 uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
