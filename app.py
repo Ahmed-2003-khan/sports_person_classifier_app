@@ -28,6 +28,7 @@ def w2d(img, mode='haar', level=1):
 def get_cropped_image_if_2_eyes(image_path):
     img = cv2.imread(image_path)
     if img is None:
+        st.error("Error: Could not read the image.")
         return None
     result = detector.detect_faces(img)
     if result:
@@ -75,27 +76,37 @@ if uploaded_file is not None:
         cropped_image = get_cropped_image_if_2_eyes("temp_image.jpg")
 
         if cropped_image is not None:
-            # Preprocess the image
-            scalled_raw_image = cv2.resize(cropped_image, (32, 32))
-            img_har = w2d(cropped_image, 'db1', 5)
-            scalled_img_har = cv2.resize(img_har, (32, 32))
-            combined_img = np.hstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
-            combined_img = combined_img.reshape(1, -1).astype(float)
+            # Check if cropped image is valid
+            if cropped_image.size == 0:
+                st.error("Error: The cropped image is empty.")
+            else:
+                # Display the cropped image for debugging
+                st.image(cropped_image, caption='Cropped Image', use_column_width=True)
 
-            # Predict the class
-            prediction = model.predict(combined_img)
-            predicted_class = labels[str(prediction[0])]
+                # Preprocess the image
+                try:
+                    scalled_raw_image = cv2.resize(cropped_image, (32, 32))
+                    img_har = w2d(cropped_image, 'db1', 5)
+                    scalled_img_har = cv2.resize(img_har, (32, 32))
+                    combined_img = np.hstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
+                    combined_img = combined_img.reshape(1, -1).astype(float)
 
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.subheader("Uploaded pic")
-                st.image(uploaded_file, caption='Cropped Face with 2 eyes detected', use_column_width=True)
-            
-            with col2:
-                st.subheader("Prediction")
-                st.write(f"**Predicted Class:** {predicted_class}")
+                    # Predict the class
+                    prediction = model.predict(combined_img)
+                    predicted_class = labels[str(prediction[0])]
+
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.subheader("Uploaded pic")
+                        st.image(uploaded_file, caption='Cropped Face with 2 eyes detected', use_column_width=True)
+                    
+                    with col2:
+                        st.subheader("Prediction")
+                        st.write(f"**Predicted Class:** {predicted_class}")
+                        
+                except Exception as e:
+                    st.error(f"Error during image processing: {e}")
                 
         else:
             st.error("No face with 2 eyes detected. Please upload a clearer photo.")
-
