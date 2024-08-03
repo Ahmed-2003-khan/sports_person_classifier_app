@@ -5,3 +5,4 @@ opencv-python-headless==4.6.0.66
 pywavelets==1.4.1
 tensorflow
 cvlib
+scikit-learn
