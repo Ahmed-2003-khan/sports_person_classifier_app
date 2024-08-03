@@ -61,6 +61,17 @@ st.set_page_config(page_title="Cricket Player Face Classification", layout="wide
 st.title("Cricket Player Face Classification")
 st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
 
+st.markdown(
+    """
+    <style>
+    .element-container .stImage > div > img {
+        pointer-events: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Display player images at the top of the page
 st.subheader("This website can classify the following cricket players:")
 players = ["Imran Khan", "Kapil Dev", "Virat Kohli", "MS Dhoni", "Shoaib Akhtar", "Wasim Akram"]
