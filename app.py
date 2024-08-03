@@ -47,7 +47,22 @@ with open(labels_path, 'r') as labels_file:
 st.set_page_config(page_title="Cricket Player Face Classification", layout="wide", page_icon="🏏")
 
 st.title("Cricket Player Face Classification")
-st.markdown("Upload a photo to classify the cricket player. Ensure the face is clear for best results.")
+st.markdown("Upload a photo to classify the cricket player from the following list:")
+
+# Show player images
+player_images = {
+    "Imran Khan": "images/imran_khan.jpeg",
+    "Kapil Dev": "images/kapil_dev.jpg",
+    "Shoaib Akhtar": "images/shoaib_akhtar.jpg",
+    "Virat Kohli": "images/virat_kohli.jpg",
+    "MS Dhoni": "images/ms_dhoni.jpg",
+    "Wasim Akram": "images/wasim_akram.jpg"
+}
+
+cols = st.columns(3)
+for i, (player_name, image_path) in enumerate(player_images.items()):
+    with cols[i % 3]:
+        st.image(image_path, caption=player_name, use_column_width=True)
 
 st.sidebar.header("Instructions")
 st.sidebar.write("1. Upload a clear photo of the face.")
@@ -81,7 +96,7 @@ if uploaded_file is not None:
             col1, col2 = st.columns(2)
             
             with col1:
-                st.subheader("Uploaded pic")
+                st.subheader("Uploaded Image")
                 st.image(uploaded_file, caption='Cropped Face Detected', use_column_width=True)
             
             with col2:
