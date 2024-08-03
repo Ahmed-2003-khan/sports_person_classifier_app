@@ -7,6 +7,7 @@ import pywt
 import json
 import cvlib as cv
 from cvlib.object_detection import draw_bbox
+import os
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -59,10 +60,18 @@ player_images = {
     "Wasim Akram": "wasim_akram.jpeg"
 }
 
+# Resize and display player images
+resize_dimensions = (200, 200)  # Set the desired size here
+
 cols = st.columns(3)
 for i, (player_name, image_path) in enumerate(player_images.items()):
     with cols[i % 3]:
-        st.image(image_path, caption=player_name, use_column_width=True)
+        if os.path.exists(image_path):
+            img = Image.open(image_path)
+            img = img.resize(resize_dimensions)
+            st.image(img, caption=player_name, use_column_width=True)
+        else:
+            st.warning(f"Image for {player_name} not found at {image_path}.")
 
 st.sidebar.header("Instructions")
 st.sidebar.write("1. Upload a clear photo of the face.")
