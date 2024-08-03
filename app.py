@@ -51,12 +51,12 @@ st.markdown("Upload a photo to classify the cricket player from the following li
 
 # Show player images
 player_images = {
-    "Imran Khan": "images/imran_khan.jpeg",
+    "Imran Khan": "images/imran_khan.jpg",
     "Kapil Dev": "images/kapil_dev.jpg",
     "Shoaib Akhtar": "images/shoaib_akhtar.jpg",
     "Virat Kohli": "images/virat_kohli.jpg",
-    "MS Dhoni": "images/ms_dhoni.jpg",
-    "Wasim Akram": "images/wasim_akram.jpg"
+    "MS Dhoni": "images/ms_dhoni.jpeg",
+    "Wasim Akram": "images/wasim_akram.jpeg"
 }
 
 cols = st.columns(3)
