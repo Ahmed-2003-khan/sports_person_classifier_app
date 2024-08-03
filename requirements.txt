@@ -4,6 +4,6 @@ numpy==1.23.5
 opencv-python-headless==4.6.0.66
 pywavelets==1.4.1
 mtcnn==0.1.0
-tensorflow==2.13.1
+tensorflow==2.4.1
 scikit-learn==1.2.2
 
