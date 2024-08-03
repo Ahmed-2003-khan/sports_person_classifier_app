@@ -99,7 +99,7 @@ if uploaded_file is not None:
             scalled_raw_image = cv2.resize(cropped_image, (32, 32))
             img_har = w2d(cropped_image, 'db1', 5)
             scalled_img_har = cv2.resize(img_har, (32, 32))
-            combined_img = np.vstack((scalled_raw_image.flatten(), scalled_img_har.flatten()))
+            combined_img = np.vstack((scalled_raw_image.reshape(32*32*3,1), scalled_img_har.reshape(32*32,1)))
             combined_img = combined_img.reshape(1, -1).astype(float)
 
             # Predict the class
