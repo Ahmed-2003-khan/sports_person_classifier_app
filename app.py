@@ -35,7 +35,7 @@ def get_cropped_image_if_face_detected(image_path):
     return None
 
 # Load your model and label dictionary
-model_path = "model.pkl"
+model_path = "model_compressed.pklz"
 labels_path = "class_dictionary.json"
 
 with open(model_path, 'rb') as model_file:
