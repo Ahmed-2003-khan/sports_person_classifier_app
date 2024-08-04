@@ -8,6 +8,7 @@ import json
 import cvlib as cv
 from cvlib.object_detection import draw_bbox
 import os
+from joblib import load
 
 # Function to apply wavelet transform
 def w2d(img, mode='haar', level=1):
@@ -35,11 +36,10 @@ def get_cropped_image_if_face_detected(image_path):
     return None
 
 # Load your model and label dictionary
-model_path = "model_compressed.pkl"
+model_path = "model_compressed.pklz"
 labels_path = "class_dictionary.json"
 
-with open(model_path, 'rb') as model_file:
-    model = pickle.load(model_file)
+model = load('model_compressed.pklz')
 
 with open(labels_path, 'r') as labels_file:
     labels = json.load(labels_file)
