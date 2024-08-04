@@ -6,3 +6,4 @@ pywavelets==1.4.1
 tensorflow
 cvlib
 scikit-learn
+joblib
